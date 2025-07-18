@@ -1,7 +1,6 @@
 package lesson_15;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -76,10 +75,6 @@ public class AutomatedTestCases {
 
                 driver.findElement(By.cssSelector("input[name='password']")).sendKeys(password);
                 driver.findElement(By.cssSelector("input[name='passwordConfirmation']")).sendKeys(password);
-
-                WebElement input = driver.findElement(By.cssSelector("input[name='email'][placeholder='Enter email']"));
-                Actions actions = new Actions(driver);
-                actions.click(input).perform();
 
                 try {
                     // the button becomes enabled not instantly - we have to use waiter
