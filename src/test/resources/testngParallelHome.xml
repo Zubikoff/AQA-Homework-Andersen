@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<suite name="Parallel suite" parallel="classes" thread-count="2">
+    <test name="Parallel Classes">
+        <classes>
+            <class name="lesson_16.parallelismus.ParallelClass1"/>
+            <class name="lesson_16.parallelismus.ParallelClass2"/>
+        </classes>
+    </test>
+</suite>
