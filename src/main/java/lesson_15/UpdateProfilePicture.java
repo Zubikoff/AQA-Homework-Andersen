@@ -26,7 +26,7 @@ public class UpdateProfilePicture {
         WebDriverWait Wait = new WebDriverWait(driver, Duration.ofSeconds(2));
         Wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//img[@alt=''][contains(@src,'data:image')]")));
 
-        //emulate user hovering mouse above the image to reveal Upload image/button
+        // emulate user hovering mouse above the image to reveal Upload image/button
         WebElement picture = driver.findElement(By.xpath("//img[@alt=''][contains(@src,'data:image')]"));
         Actions actions = new Actions(driver);
         actions.moveToElement(picture).perform();

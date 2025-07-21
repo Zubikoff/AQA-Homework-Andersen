@@ -33,7 +33,7 @@ public class AutomatedTestCases {
         while (invalidEmail.equals(validEmail)) {
             invalidEmail = getRandomEmail(); // just in case randomizer returned the same email, reroll until it isn't
         }
-        return invalidEmail;
+        return invalidEmail; // method was of no use in the end, but I will keep it
     }
 
     private static String getRandomEmail(){
