@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<suite name="Parameters">
+    <test name="Parameters 1st">
+        <parameter name="email" value="aqa521mail@mail.com"/>
+        <parameter name="password" value="Qwer!234"/>
+        <classes>
+            <class name="lesson_16.userLogin.ParametersTest"/>
+        </classes>
+    </test>
+    <test name="Parameters 2nd">
+        <parameter name="email" value="aqa522mail@mail.com"/>
+        <parameter name="password" value="1234QWER"/>
+        <classes>
+            <class name="lesson_16.userLogin.ParametersTest"/>
+        </classes>
+    </test>
+    <test name="Parameters 3rd">
+        <parameter name="email" value="aqa523mail@mail.com"/>
+        <parameter name="password" value="qweR1@34"/>
+        <classes>
+            <class name="lesson_16.userLogin.ParametersTest"/>
+        </classes>
+    </test>
+</suite>
