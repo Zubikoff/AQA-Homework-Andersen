@@ -1,4 +1,23 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<suite>
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<suite name="Groups testing">
+    <test name="First group">
+        <groups>
+            <run>
+                <include name="first"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="lesson_16.grouping.Groups"/>
+        </classes>
+    </test>
+    <test name="Second group">
+        <groups>
+            <run>
+                <include name="second"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="lesson_16.grouping.Groups"/>
+        </classes>
+    </test>
 </suite>
