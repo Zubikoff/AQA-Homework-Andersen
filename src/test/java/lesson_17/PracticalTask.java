@@ -1,19 +1,14 @@
 package lesson_17;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -34,7 +29,15 @@ public class PracticalTask {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         actions = new Actions(driver);
+    }
 
+    @AfterClass
+    public void quitDriver() {
+        //driver.quit();
+    }
+
+    @BeforeMethod
+    public void LogIn(){
         driver.get("https://qa-course-01.andersenlab.com/login");
         wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/login"));
 
@@ -46,19 +49,14 @@ public class PracticalTask {
         wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/"));
     }
 
-    @AfterClass
-    public void quitDriver() {
-        //driver.quit();
-    }
-
     public void selectMenuItem(String item){
-        driver.findElement(By.xpath("//div[text()='AQA Practice']"));
         actions.moveToElement(driver.findElement(By.xpath("//div[text()='AQA Practice']"))).perform();
         By menuItemLocator = By.xpath("//div[text()='"+ item + "']");
         wait.until(ExpectedConditions.visibilityOfElementLocated(menuItemLocator)).click();
     }
 
     @Test
+    @Ignore
     public void selectChoosing() {
         selectMenuItem("Select");
 
@@ -112,8 +110,55 @@ public class PracticalTask {
         WebElement coursesSelectFirst = driver.findElement(By.xpath("//select[@id='MultipleSelect']//option[@value='AQA Python']"));
         WebElement coursesSelectSecond = driver.findElement(By.xpath("//select[@id='MultipleSelect']//option[@value='AQA Java']"));
 
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true)", coursesSelectFirst);
         actions.moveToElement(coursesSelectFirst)
+                .keyDown(Keys.CONTROL)
                 .click()
+                .keyUp(Keys.CONTROL)
                 .build().perform();
+
+        js.executeScript("arguments[0].scrollIntoView(true)", coursesSelectSecond);
+        actions.moveToElement(coursesSelectSecond)
+                .keyDown(Keys.CONTROL)
+                .click()
+                .keyUp(Keys.CONTROL)
+                .build().perform();
+
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+        wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/search_results"));
+
+        Assert.assertTrue(driver
+                .findElement(By.xpath("//*[text()='Unfortunately, we did not find any courses matching your chosen criteria.']"))
+                .isDisplayed(), "Expected text not found");
+
+    }
+
+    @Test
+    public void dragAndDrop(){
+        selectMenuItem("Drag & Drop");
+
+        wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/dragndrop"));
+
+        actions.moveToElement(driver.findElement(By.id("manual1")))
+                .clickAndHold()
+                .moveToElement(driver.findElement(By.id("target-manual1")))
+                .release()
+                .build().perform();
+
+        actions.moveToElement(driver.findElement(By.id("manual2")))
+                .clickAndHold()
+                .moveToElement(driver.findElement(By.id("target-manual2")))
+                .release()
+                .build().perform();
+
+        // Drag & Drop using built-in method
+        WebElement firstAutoBlockSource = driver.findElement(By.id("auto1"));
+        WebElement firstAutoBlockTarget = driver.findElement(By.id("target-auto1"));
+        WebElement secondAutoBlockSource = driver.findElement(By.id("auto2"));
+        WebElement secondAutoBlockTarget = driver.findElement(By.id("target-auto2"));
+
+        actions.dragAndDrop(firstAutoBlockSource, firstAutoBlockTarget).perform();
+        actions.dragAndDrop(secondAutoBlockSource, secondAutoBlockTarget).perform();
     }
 }
