@@ -8,7 +8,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -37,7 +40,7 @@ public class PracticalTask {
     }
 
     @BeforeMethod
-    public void LogIn(){
+    public void LogIn() {
         driver.get("https://qa-course-01.andersenlab.com/login");
         wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/login"));
 
@@ -49,14 +52,13 @@ public class PracticalTask {
         wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/"));
     }
 
-    public void selectMenuItem(String item){
+    public void selectMenuItem(String item) {
         actions.moveToElement(driver.findElement(By.xpath("//div[text()='AQA Practice']"))).perform();
-        By menuItemLocator = By.xpath("//div[text()='"+ item + "']");
+        By menuItemLocator = By.xpath("//div[text()='" + item + "']");
         wait.until(ExpectedConditions.visibilityOfElementLocated(menuItemLocator)).click();
     }
 
     @Test
-    @Ignore
     public void selectChoosing() {
         selectMenuItem("Select");
 
@@ -135,8 +137,7 @@ public class PracticalTask {
     }
 
     @Test
-    @Ignore
-    public void dragAndDrop(){
+    public void dragAndDrop() {
         selectMenuItem("Drag & Drop");
 
         wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/dragndrop"));
@@ -170,28 +171,43 @@ public class PracticalTask {
     }
 
     @Test
-    public void alertsAndiFrames(){
+    public void alertsAndiFrames() {
         selectMenuItem("Actions, Alerts & Iframes");
 
         wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/actions"));
-
-        By resultTextLocator = By.xpath("")
-
         driver.switchTo().frame(0);
-        driver.findElement(By.id("AlertButton")).click();
 
+        // Result text will always be in this tag
+        By resultTextLocator = By.xpath("//span[text()='Results: ']/following-sibling::span");
+
+        driver.findElement(By.id("AlertButton")).click();
         Alert alert = driver.switchTo().alert();
         Assert.assertEquals(alert.getText(), "You have called alert!");
         alert.accept();
-        Assert.assertEquals(alert.getText(), "Congratulations, you have successfully enrolled in the course!");
+        Assert.assertEquals(driver.findElement(resultTextLocator).getText()
+                , "Congratulations, you have successfully enrolled in the course!");
+
 
         actions.moveToElement(driver.findElement(By.xpath("//button[text()='Get Discount']")))
                 .doubleClick()
                 .perform();
-
         alert = driver.switchTo().alert();
         Assert.assertEquals(alert.getText(), "Are you sure you want to apply the discount?");
         alert.accept();
-        Assert.assertEquals(alert.getText(), "You received a 10% discount on the second course.");
+        Assert.assertEquals(driver.findElement(resultTextLocator).getText()
+                , "You received a 10% discount on the second course.");
+
+
+        actions.contextClick(driver.findElement(By.xpath("//button[@data-test-id='PromptButton']")))
+                .perform();
+        alert = driver.switchTo().alert();
+        Assert.assertEquals(alert.getText()
+                , "Here you may describe a reason why you are cancelling your registration (or leave this field empty).");
+        String message = "Test";
+        alert.sendKeys(message);
+        alert.accept();
+        String resultMessage = "Your course application has been cancelled. Reason: " + message;
+        Assert.assertEquals(driver.findElement(resultTextLocator).getText()
+                , resultMessage);
     }
 }
