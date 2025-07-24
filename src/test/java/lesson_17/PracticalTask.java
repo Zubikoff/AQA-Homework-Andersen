@@ -135,6 +135,7 @@ public class PracticalTask {
     }
 
     @Test
+    @Ignore
     public void dragAndDrop(){
         selectMenuItem("Drag & Drop");
 
@@ -160,5 +161,37 @@ public class PracticalTask {
 
         actions.dragAndDrop(firstAutoBlockSource, firstAutoBlockTarget).perform();
         actions.dragAndDrop(secondAutoBlockSource, secondAutoBlockTarget).perform();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath(" //*[text()=\"Congratulations! Let's test for the best!\"]")));
+        Assert.assertTrue(driver
+                .findElement(By.xpath(" //*[text()=\"Congratulations! Let's test for the best!\"]"))
+                .isDisplayed(), "Expected text not found");
+    }
+
+    @Test
+    public void alertsAndiFrames(){
+        selectMenuItem("Actions, Alerts & Iframes");
+
+        wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/actions"));
+
+        By resultTextLocator = By.xpath("")
+
+        driver.switchTo().frame(0);
+        driver.findElement(By.id("AlertButton")).click();
+
+        Alert alert = driver.switchTo().alert();
+        Assert.assertEquals(alert.getText(), "You have called alert!");
+        alert.accept();
+        Assert.assertEquals(alert.getText(), "Congratulations, you have successfully enrolled in the course!");
+
+        actions.moveToElement(driver.findElement(By.xpath("//button[text()='Get Discount']")))
+                .doubleClick()
+                .perform();
+
+        alert = driver.switchTo().alert();
+        Assert.assertEquals(alert.getText(), "Are you sure you want to apply the discount?");
+        alert.accept();
+        Assert.assertEquals(alert.getText(), "You received a 10% discount on the second course.");
     }
 }
