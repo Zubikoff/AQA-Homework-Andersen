@@ -36,7 +36,7 @@ public class PracticalTask {
 
     @AfterClass
     public void quitDriver() {
-        //driver.quit();
+        driver.quit();
     }
 
     @BeforeMethod
