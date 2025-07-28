@@ -6,7 +6,7 @@ public class Utilities {
     /**
      * @return Randomly generated email
      */
-    public static String getValidEmail(){
+    public static String getValidEmail() {
         return getRandomEmail();
     }
 
@@ -21,9 +21,9 @@ public class Utilities {
         return invalidEmail;
     }
 
-    private static String getRandomEmail(){
+    private static String getRandomEmail() {
         Random rand = new Random();
-        return "aqastud" + (rand.nextInt(9000)+999)
-                + "@mail" + (rand.nextInt(9000)+999) + ".com";
+        return "aqastud" + (rand.nextInt(9000) + 999)
+                + "@mail" + (rand.nextInt(9000) + 999) + ".com";
     }
 }

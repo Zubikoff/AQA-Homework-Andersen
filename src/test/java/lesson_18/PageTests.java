@@ -1,20 +1,13 @@
 package lesson_18;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lesson_18.pages.LoginPage;
 import lesson_18.pages.RegistrationPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
 
 public class PageTests {
     private static WebDriver driver;
@@ -22,7 +15,7 @@ public class PageTests {
     private static RegistrationPage registrationPage;
 
     @BeforeClass
-    public void setup(){
+    public void setup() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
 
@@ -31,12 +24,12 @@ public class PageTests {
     }
 
     @AfterClass
-    public void close(){
+    public void close() {
         driver.quit();
     }
 
     @Test
-    public void logInPositive(){
+    public void logInPositive() {
         String email = "aqastud@mail.com";
         String password = "Qwer123$";
         loginPage.openLoginPage()
@@ -47,7 +40,7 @@ public class PageTests {
     }
 
     @Test
-    public void logInWithInvalidPassword(){
+    public void logInWithInvalidPassword() {
         String email = "aqastud@mail.com";
         String password = "Qwer1234";
         loginPage.openLoginPage()
@@ -59,7 +52,7 @@ public class PageTests {
     }
 
     @Test
-    public void logInWithInvalidEmail(){
+    public void logInWithInvalidEmail() {
         String email = Utilities.getInvalidEmail("aqastud@mail.com");
         String password = "Qwer123$";
         loginPage.openLoginPage()
@@ -71,7 +64,7 @@ public class PageTests {
     }
 
     @Test
-    public void logInWithEmptyFields(){
+    public void logInWithEmptyFields() {
         loginPage.openLoginPage()
                 .clickOnSignInButton()
                 .verifyExpectedTextOnPage("Required")
@@ -79,7 +72,7 @@ public class PageTests {
     }
 
     @Test
-    public void logInWithTooLongEmail(){
+    public void logInWithTooLongEmail() {
         String email = "aqa@1234567890123456789012345678901234567890123456789012345678901234.com";
         String password = "Qwer123$";
         loginPage.openLoginPage()
@@ -91,7 +84,7 @@ public class PageTests {
     }
 
     @Test
-    public void registerPositive(){
+    public void registerPositive() {
         String email = Utilities.getValidEmail();
         String password = "Qwer123$";
         registrationPage.openRegistrationPage()
@@ -106,7 +99,7 @@ public class PageTests {
     }
 
     @Test
-    public void registerAlreadyRegistered(){
+    public void registerAlreadyRegistered() {
         //this should fail - the error message is returned in response body, but never displayed
         String email = "aqastud@mail.com";
         String password = "Qwer123$";
@@ -122,7 +115,7 @@ public class PageTests {
     }
 
     @Test
-    public void registerWithFirstNameTooLong(){
+    public void registerWithFirstNameTooLong() {
         //this should fail - the error message is returned in response body, but never displayed
         String email = "aqastud@mail.com";
         String password = "Qwer123$";
@@ -139,7 +132,7 @@ public class PageTests {
     }
 
     @Test
-    public void registerWithPasswordTooShort(){
+    public void registerWithPasswordTooShort() {
         String email = "aqastud@mail.com";
         String password = "Qwer123";
         registrationPage.openRegistrationPage()
@@ -154,7 +147,7 @@ public class PageTests {
     }
 
     @Test
-    public void registerWithPasswordsNotMatch(){
+    public void registerWithPasswordsNotMatch() {
         String email = "aqastud@mail.com";
         String password = "Qwer123$";
         String password2 = "Qwer1234";

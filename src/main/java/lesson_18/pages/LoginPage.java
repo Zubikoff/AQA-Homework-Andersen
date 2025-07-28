@@ -35,39 +35,39 @@ public class LoginPage {
         PageFactory.initElements(driver, this);
     }
 
-    public LoginPage openLoginPage(){
+    public LoginPage openLoginPage() {
         driver.get(pageURL);
         return this;
     }
 
-    public LoginPage sendKeys(WebElement element, String text){
+    public LoginPage sendKeys(WebElement element, String text) {
         wait.until(ExpectedConditions.visibilityOf(element)).sendKeys(text);
         return this;
     }
 
-    public LoginPage setEmail(String text){
+    public LoginPage setEmail(String text) {
         sendKeys(emailField, text);
         email = text;
         return this;
     }
 
-    public LoginPage setPassword(String text){
+    public LoginPage setPassword(String text) {
         sendKeys(passwordField, text);
         return this;
     }
 
-    public LoginPage clickOnSignInButton(){
+    public LoginPage clickOnSignInButton() {
         wait.until(ExpectedConditions.visibilityOf(signInButton)).click();
         return this;
     }
 
-    public LoginPage verifyExpectedTextOnPage(String text){
+    public LoginPage verifyExpectedTextOnPage(String text) {
         Assert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '"
                 + text + "')]"))).isDisplayed(), "Unable to verify expected text on page");
         return this;
     }
 
-    public LoginPage verifySignInButtonIsDisabled(){
+    public LoginPage verifySignInButtonIsDisabled() {
         Assert.assertFalse(wait.until(ExpectedConditions.visibilityOf(signInButton)).isEnabled(), "Unable to verify Sign In button is disabled");
         return this;
     }
@@ -75,7 +75,7 @@ public class LoginPage {
     /**
      * Verify that the email we logged in with is the same that we entered in 'Email' field
      */
-    public LoginPage verifyLogInSuccessful(){
+    public LoginPage verifyLogInSuccessful() {
         try {
             wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/"));
             By locator = By.xpath("//div[text()=\"E-mail\"]/following-sibling::div[text()=\"" + email + "\"]");
