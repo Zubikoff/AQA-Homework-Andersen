@@ -108,16 +108,12 @@ public class RegistrationPage {
      * Verify that we can log in using the email and password from registration process
      */
     public RegistrationPage verifyRegistrationSuccessful(){
-        try {
-            LoginPage page = new LoginPage(driver);
-            page.openLoginPage()
-                    .setEmail(email)
-                    .setPassword(password)
-                    .clickOnSignInButton()
-                    .verifyLogInSuccessful();
-        } catch (TimeoutException e) {
-            Assert.fail("Unable to verify the location on the expected page");
-        }
+        LoginPage page = new LoginPage(driver);
+        page.openLoginPage()
+                .setEmail(email)
+                .setPassword(password)
+                .clickOnSignInButton()
+                .verifyLogInSuccessful();
         return this;
     }
 }
