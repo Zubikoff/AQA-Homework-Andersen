@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.time.Duration;
 
@@ -18,7 +19,7 @@ public class LoginPage {
     private static final String pageURL = "https://qa-course-01.andersenlab.com/login";
     private static String email;
 
-    @FindBy(xpath = "\"//input[@name=\\\"email\\\"]\"")
+    @FindBy(xpath = "//input[@name=\"email\"]")
     private static WebElement emailField;
 
     @FindBy(xpath = "//input[@name=\"password\"][@placeholder=\"Enter password\"]")
@@ -60,34 +61,28 @@ public class LoginPage {
         return this;
     }
 
-    public boolean verifyExpectedTextOnPage(String text){
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '"
-                    + text + "')]")));
-        } catch (TimeoutException e) {
-            return false;
-        }
-        return true;
+    public LoginPage verifyExpectedTextOnPage(String text){
+        Assert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '"
+                + text + "')]"))).isDisplayed(), "Unable to verify expected text on page");
+        return this;
     }
 
-    public boolean verifySignInButtonIsDisabled(){
-        try {
-            return wait.until(ExpectedConditions.visibilityOf(signInButton)).isDisplayed();
-        } catch (TimeoutException e) {
-            return false;
-        }
+    public LoginPage verifySignInButtonIsDisabled(){
+        Assert.assertFalse(wait.until(ExpectedConditions.visibilityOf(signInButton)).isEnabled(), "Unable to verify Sign In button is disabled");
+        return this;
     }
 
     /**
      * Verify that the email we logged in with is the same that we entered in 'Email' field
      */
-    public boolean verifyLogInSuccessful(){
+    public LoginPage verifyLogInSuccessful(){
         try {
             wait.until(ExpectedConditions.urlToBe("https://qa-course-01.andersenlab.com/"));
             By locator = By.xpath("//div[text()=\"E-mail\"]/following-sibling::div[text()=\"" + email + "\"]");
-            return driver.findElement(locator).isDisplayed();
+            Assert.assertTrue(driver.findElement(locator).isDisplayed(), "Unable to verify the login happened with the expected user");
         } catch (TimeoutException e) {
-            return false;
+            Assert.fail("Unable to verify the location on the expected page");
         }
+        return this;
     }
 }
