@@ -10,10 +10,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+import utilities.PageListener;
+import utilities.UtilityMethods;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Listeners({PageListener.class})
 public class PageTests {
     private static WebDriver driver;
     private static LoginPage loginPage;
@@ -45,8 +45,8 @@ public class PageTests {
     }
 
     @AfterMethod
-    public void makeScreenshotIfTestFailed(ITestResult result){
-        if (result.getStatus() == ITestResult.FAILURE){
+    public void makeScreenshotIfTestFailed(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE) {
             takeScreenshot(result.getMethod().getMethodName());
         }
     }
@@ -99,7 +99,7 @@ public class PageTests {
     @Story("Login user")
     @Test
     public void logInWithInvalidEmail() {
-        String email = Utilities.getInvalidEmail("aqastud@mail.com");
+        String email = UtilityMethods.getInvalidEmail("aqastud@mail.com");
         String password = "Qwer123$";
         loginPage.openLoginPage()
                 .setEmail(email)
@@ -140,7 +140,7 @@ public class PageTests {
     @Story("Register user")
     @Test
     public void registerPositive() {
-        String email = Utilities.getValidEmail();
+        String email = UtilityMethods.getValidEmail();
         String password = "Qwer123$";
         registrationPage.openRegistrationPage()
                 .setFirstName("Aqa")

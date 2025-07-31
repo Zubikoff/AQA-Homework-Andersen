@@ -1,8 +1,8 @@
-package lesson_18;
+package utilities;
 
 import java.util.Random;
 
-public class Utilities {
+public class UtilityMethods {
     /**
      * @return Randomly generated email
      */

@@ -1,9 +1,8 @@
 package lesson_18.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+
 
 public class RegistrationPage {
     private static WebDriver driver;
@@ -41,15 +41,19 @@ public class RegistrationPage {
     @FindBy(xpath = "//button[@type=\"submit\"]")
     private static WebElement submitButton;
 
+    private Logger logger = LogManager.getLogger(this.getClass());
+
     public RegistrationPage(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
         PageFactory.initElements(driver, this);
+        logger.info("RegistrationPage initialized.");
     }
 
     public RegistrationPage openRegistrationPage() {
         driver.get(pageURL);
+        logger.info("Opened page. URL: " + pageURL);
         return this;
     }
 
@@ -92,7 +96,13 @@ public class RegistrationPage {
     }
 
     public RegistrationPage clickOnSubmitButton() {
-        wait.until(ExpectedConditions.visibilityOf(submitButton)).click();
+        try {
+            wait.until(ExpectedConditions.visibilityOf(submitButton)).click();
+        } catch (TimeoutException e) {
+            String message = "Unable to click on \"Submit\" button";
+            logger.error(message);
+            Assert.fail(message);
+        }
         return this;
     }
 
@@ -111,12 +121,17 @@ public class RegistrationPage {
      * Verify that we can log in using the email and password from registration process
      */
     public RegistrationPage verifyRegistrationSuccessful() {
-        LoginPage page = new LoginPage(driver);
-        page.openLoginPage()
-                .setEmail(email)
-                .setPassword(password)
-                .clickOnSignInButton()
-                .verifyLogInSuccessful();
+        try {
+            LoginPage page = new LoginPage(driver);
+            page.openLoginPage()
+                    .setEmail(email)
+                    .setPassword(password)
+                    .clickOnSignInButton()
+                    .verifyLogInSuccessful();
+        } catch (Exception e) {
+            logger.error("Unable to verify the success of the registration");
+            Assert.fail("Unable to verify the success of the registration");
+        }
         return this;
     }
 }

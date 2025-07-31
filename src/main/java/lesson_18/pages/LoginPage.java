@@ -30,7 +30,7 @@ public class LoginPage {
     @FindBy(xpath = "//button[@type=\"submit\"]")
     private static WebElement signInButton;
 
-    protected Logger logger = LogManager.getLogger(this.getClass());
+    private Logger logger = LogManager.getLogger(this.getClass());
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -47,14 +47,7 @@ public class LoginPage {
     }
 
     public LoginPage sendKeys(WebElement element, String text) {
-        try {
-            wait.until(ExpectedConditions.visibilityOf(element)).sendKeys(text);
-        } catch (TimeoutException e) {
-            String message = "Unable to confirm the visibility of the web element for text insertion. Element: "
-                    + element.getTagName() + " " + element.getText();
-            logger.error(message);
-            Assert.fail(message);
-        }
+        wait.until(ExpectedConditions.visibilityOf(element)).sendKeys(text);
         return this;
     }
 
