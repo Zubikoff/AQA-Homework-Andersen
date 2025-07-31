@@ -46,7 +46,7 @@ public class PageTests {
 
     @AfterMethod
     public void makeScreenshotIfTestFailed(ITestResult result){
-        if (result.getStatus() ==ITestResult.FAILURE){
+        if (result.getStatus() == ITestResult.FAILURE){
             takeScreenshot(result.getMethod().getMethodName());
         }
     }
