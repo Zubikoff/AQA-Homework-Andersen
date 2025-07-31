@@ -1,18 +1,55 @@
 package lesson_18;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.*;
 import lesson_18.pages.LoginPage;
 import lesson_18.pages.RegistrationPage;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PageTests {
     private static WebDriver driver;
     private static LoginPage loginPage;
     private static RegistrationPage registrationPage;
+
+    public void takeScreenshot(String methodName) {
+        try {
+            // Take screenshot
+            File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+            // Define screenshot path and filename
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String screenshotPath = "target/allure-results/screenshot-" + methodName + "_" + timestamp + ".png";
+
+            // Copy the screenshot to the destination
+            FileUtils.copyFile(screenshotFile, new File(screenshotPath));
+            // Add screenshot to Allure
+            Allure.addAttachment("Screenshot for " + methodName, new FileInputStream(screenshotPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterMethod
+    public void makeScreenshotIfTestFailed(ITestResult result){
+        if (result.getStatus() ==ITestResult.FAILURE){
+            takeScreenshot(result.getMethod().getMethodName());
+        }
+    }
 
     @BeforeClass
     public void setup() {
@@ -28,6 +65,9 @@ public class PageTests {
         driver.quit();
     }
 
+    @Description("User is able to log in with valid email and password")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Login user")
     @Test
     public void logInPositive() {
         String email = "aqastud@mail.com";
@@ -39,6 +79,9 @@ public class PageTests {
                 .verifyLogInSuccessful();
     }
 
+    @Description("User is unable to log in with valid email and invalid password")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Login user")
     @Test
     public void logInWithInvalidPassword() {
         String email = "aqastud@mail.com";
@@ -51,6 +94,9 @@ public class PageTests {
                 .verifySignInButtonIsDisabled();
     }
 
+    @Description("User is unable to log in with invalid email")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Login user")
     @Test
     public void logInWithInvalidEmail() {
         String email = Utilities.getInvalidEmail("aqastud@mail.com");
@@ -63,6 +109,9 @@ public class PageTests {
                 .verifySignInButtonIsDisabled();
     }
 
+    @Description("User is unable to click \"Sign in\" without filling \"Email\" and \"Password\" fields")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Login user")
     @Test
     public void logInWithEmptyFields() {
         loginPage.openLoginPage()
@@ -71,6 +120,9 @@ public class PageTests {
                 .verifySignInButtonIsDisabled();
     }
 
+    @Description("User is unable to click \"Sign in\" with email domain longer than 63 characters")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Login user")
     @Test
     public void logInWithTooLongEmail() {
         String email = "aqa@1234567890123456789012345678901234567890123456789012345678901234.com";
@@ -83,6 +135,9 @@ public class PageTests {
                 .verifySignInButtonIsDisabled();
     }
 
+    @Description("User is able to register using valid data")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Register user")
     @Test
     public void registerPositive() {
         String email = Utilities.getValidEmail();
@@ -98,6 +153,9 @@ public class PageTests {
                 .verifyRegistrationSuccessful();
     }
 
+    @Description("User is unable to register using email already present in the system")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Register user")
     @Test
     public void registerAlreadyRegistered() {
         //this should fail - the error message is returned in response body, but never displayed
@@ -114,6 +172,9 @@ public class PageTests {
                 .verifyExpectedTextOnPage("User with email " + email + " already exist.");
     }
 
+    @Description("User is unable to register using first name longer then 255 characters")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Register user")
     @Test
     public void registerWithFirstNameTooLong() {
         //this should fail - the error message is returned in response body, but never displayed
@@ -131,6 +192,9 @@ public class PageTests {
                 .verifyExpectedTextOnPage("The value length shouldn't exceed 255 symbols.");
     }
 
+    @Description("User is unable to register if entered password is under 8 characters")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Register user")
     @Test
     public void registerWithPasswordTooShort() {
         String email = "aqastud@mail.com";
@@ -146,6 +210,9 @@ public class PageTests {
                 .verifySubmitButtonIsDisabled();
     }
 
+    @Description("User is unable to register if entered password does not match confirm password")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Register user")
     @Test
     public void registerWithPasswordsNotMatch() {
         String email = "aqastud@mail.com";

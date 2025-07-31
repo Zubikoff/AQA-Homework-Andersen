@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<suite name="Lesson 19 Suite">
+    <test name="Test Allure report generating">
+        <classes>
+            <class name="lesson_18.PageTests"/>
+        </classes>
+    </test>
+</suite>
