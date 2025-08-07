@@ -28,23 +28,23 @@ public class ApiDemosPage {
     private final By textSwitcher = AppiumBy.accessibilityId("TextSwitcher");
     private final By nextButton = AppiumBy.accessibilityId("Next");
 
-    public ApiDemosPage(AppiumDriver driver){
+    public ApiDemosPage(AppiumDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
-    public ApiDemosPage openViewPage(){
+    public ApiDemosPage openViewPage() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(views)).click();
         return this;
     }
 
-    public int countViewElementsOnPage(){
+    public int countViewElementsOnPage() {
         List<WebElement> elements;
         Set<String> uniqueElements = new HashSet<>();
 
         //"(//android.widget.FrameLayout)[3]//android.widget.TextView" //to exclude "API Demos" text view
         elements = driver.findElements(AppiumBy.xpath("(//android.widget.FrameLayout)[3]//android.widget.TextView"));
-        for (WebElement element: elements){
+        for (WebElement element : elements) {
             uniqueElements.add(element.getText()); // may and WILL fail if the elements have the same text,
             // but it technically can and what do I do with that?
         }
@@ -54,7 +54,7 @@ public class ApiDemosPage {
                         ".scrollIntoView(new UiSelector().text(\"Grid\"))"
         ));
         elements = driver.findElements(AppiumBy.xpath("(//android.widget.FrameLayout)[3]//android.widget.TextView"));
-        for (WebElement element: elements){
+        for (WebElement element : elements) {
             uniqueElements.add(element.getText());
         }
 
@@ -63,7 +63,7 @@ public class ApiDemosPage {
                         ".scrollIntoView(new UiSelector().text(\"Rotating Button\"))"
         ));
         elements = driver.findElements(AppiumBy.xpath("(//android.widget.FrameLayout)[3]//android.widget.TextView"));
-        for (WebElement element: elements){
+        for (WebElement element : elements) {
             uniqueElements.add(element.getText());
         }
 
@@ -72,7 +72,7 @@ public class ApiDemosPage {
                         ".scrollIntoView(new UiSelector().text(\"TextSwitcher\"))"
         ));
         elements = driver.findElements(AppiumBy.xpath("(//android.widget.FrameLayout)[3]//android.widget.TextView"));
-        for (WebElement element: elements){
+        for (WebElement element : elements) {
             uniqueElements.add(element.getText());
         }
 
@@ -81,29 +81,29 @@ public class ApiDemosPage {
                         ".scrollIntoView(new UiSelector().text(\"WebView3\"))"
         ));
         elements = driver.findElements(AppiumBy.xpath("(//android.widget.FrameLayout)[3]//android.widget.TextView"));
-        for (WebElement element: elements){
+        for (WebElement element : elements) {
             uniqueElements.add(element.getText());
         }
 
         return uniqueElements.size();
     }
 
-    public ApiDemosPage openDateWidgetsPage(){
+    public ApiDemosPage openDateWidgetsPage() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(dateWidgets)).click();
         return this;
     }
 
-    public ApiDemosPage openDateWidgetsDialog(){
+    public ApiDemosPage openDateWidgetsDialog() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(dialog)).click();
         return this;
     }
 
-    public ApiDemosPage tapChangeTheDateButton(){
+    public ApiDemosPage tapChangeTheDateButton() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(changeTheDate)).click();
         return this;
     }
 
-    public ApiDemosPage setTomorrowDate(){
+    public ApiDemosPage setTomorrowDate() {
         LocalDate nextDay = LocalDate.now().plusDays(1);
         if (nextDay.getDayOfMonth() == 1) {
             // next day is next month - click on month button
@@ -117,12 +117,12 @@ public class ApiDemosPage {
         return this;
     }
 
-    public ApiDemosPage tapChangeTheTimeButton(){
+    public ApiDemosPage tapChangeTheTimeButton() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(changeTheTime)).click();
         return this;
     }
 
-    public ApiDemosPage setRequiredTime(){
+    public ApiDemosPage setRequiredTime() {
         String hours = "11";
         String minutes = "11";
 
@@ -155,7 +155,7 @@ public class ApiDemosPage {
     //Task 3: //android.widget.TextView[@content-desc="Views"] -> //android.widget.Button[@content-desc="Next"]
     // text label: (//android.widget.TextView)[2]
 
-    public ApiDemosPage openTextSwitcherPage(){
+    public ApiDemosPage openTextSwitcherPage() {
         driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiScrollable(new UiSelector().scrollable(true))" +
                         ".scrollIntoView(new UiSelector().text(\"TextSwitcher\"))"
@@ -164,14 +164,14 @@ public class ApiDemosPage {
         return this;
     }
 
-    public ApiDemosPage tapNextButtonNTimes(int n){
+    public ApiDemosPage tapNextButtonNTimes(int n) {
         for (int i = 0; i < n; i++) {
             wait.until(ExpectedConditions.visibilityOfElementLocated(nextButton)).click();
         }
         return this;
     }
 
-    public int getNumberOfTapsText(){
+    public int getNumberOfTapsText() {
         return Integer.parseInt(wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy
                 .xpath("(//android.widget.TextView)[2]"))).getText());
     }

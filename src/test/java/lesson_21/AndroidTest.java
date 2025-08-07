@@ -4,7 +4,9 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,19 +30,19 @@ public class AndroidTest {
     }
 
     @AfterMethod
-    public void quitDriver(){
+    public void quitDriver() {
         driver.quit();
     }
 
     @Test
-    public void countViews(){
+    public void countViews() {
         ApiDemosPage page = new ApiDemosPage(driver);
         page.openViewPage();
         Assert.assertEquals(page.countViewElementsOnPage(), 42);
     }
 
     @Test
-    public void setDateTime(){
+    public void setDateTime() {
         ApiDemosPage page = new ApiDemosPage(driver);
         page.openViewPage()
                 .openDateWidgetsPage()
@@ -52,7 +54,7 @@ public class AndroidTest {
     }
 
     @Test
-    public void countTaps(){
+    public void countTaps() {
         ApiDemosPage page = new ApiDemosPage(driver);
 
         int numberOfTaps = new Random().nextInt(15);
